@@ -1,6 +1,6 @@
 ---
 name: apollo-search
-description: Search Apollo for Portuguese real estate ICP leads using People Search API
+description: Search Apollo for Portuguese real estate ICP leads (People API Search + Organization Search)
 metadata:
   openclaw:
     emoji: 🔍
@@ -13,7 +13,14 @@ metadata:
 
 # Apollo Search Skill
 
-Search Apollo's People Search API for PT real estate ICP leads matching the PropRooster profile.
+Search Apollo for PT real estate ICP leads. Two endpoints available:
+
+| Endpoint | Path | Credits | Returns |
+|----------|------|---------|---------|
+| [People API Search](https://docs.apollo.io/reference/people-api-search) | `/mixed_people/api_search` | No | People (name, title, org) — no emails |
+| [Organization Search](https://docs.apollo.io/reference/organization-search) | `/mixed_companies/search` | Yes | Companies (name, domain, phone) |
+
+**Auth:** `x-api-key` header. **Base URL:** `https://api.apollo.io/api/v1`. **Params:** Query string only.
 
 ## Usage
 
@@ -45,37 +52,54 @@ apollo-search segment="luxury"
 
 ## Implementation
 
-The skill calls Apollo's People Search endpoint:
+The skill calls Apollo's [People API Search](https://docs.apollo.io/reference/people-api-search) endpoint. Uses query params (not JSON body). Auth via `x-api-key` header.
 
 ```bash
-curl -s -X POST https://api.apollo.io/v1/mixed_people/search \
+curl -s -X POST "https://api.apollo.io/api/v1/mixed_people/api_search?organization_locations[]=Portugal&organization_num_employees_ranges[]=1,10&organization_num_employees_ranges[]=11,50&organization_num_employees_ranges[]=51,200&person_seniorities[]=c_suite&person_seniorities[]=director&person_seniorities[]=owner&person_seniorities[]=partner&page=1&per_page=25" \
   -H "Content-Type: application/json" \
-  -H "Cache-Control: no-cache" \
-  -d '{
-    "api_key": "'$APOLLO_API_KEY'",
-    "q_organization_industry_tag_ids": ["5567cd4773696439b10b0000"],
-    "person_locations": ["Portugal"],
-    "person_seniorities": ["c_suite", "director", "owner", "partner"],
-    "organization_num_employees_ranges": ["1,10", "11,50", "51,200"],
-    "page": 1,
-    "per_page": 25
-  }'
+  -H "x-api-key: $APOLLO_API_KEY" \
+  -H "Cache-Control: no-cache"
 ```
 
-**Industry tag ID for Real Estate:** `5567cd4773696439b10b0000`
+**Key details:**
+- Base URL: `https://api.apollo.io/api/v1` (note `/api/` in path)
+- Endpoint: `/mixed_people/api_search` (not `/mixed_people/search`)
+- Auth: `x-api-key` header (required)
+- Params: passed as query string, not request body
+- This endpoint does not return emails — use People Enrichment to get contact details
 
 ## Output Format
 
-For each lead, return:
+For each lead, return (api_search gives name, title, org — use People Enrichment for email):
 
 ```
-Name: [Full name]
+Name: [First name + last_name_obfuscated from response]
 Title: [Job title]
-Agency: [Company name]
-Email: [Email address]
-Location: [City, Portugal]
+Agency: [Organization name]
+Location: Portugal (organization_locations)
 ICP match reason: [1-sentence reason why this contact matches the ICP]
 ```
+
+Note: People API Search does not return email addresses. Use the People Enrichment endpoint with person `id` to get contact details.
+
+---
+
+## Organization Search (alternative)
+
+Use [Organization Search](https://docs.apollo.io/reference/organization-search) to find companies first. **Consumes credits.** Same base URL and auth.
+
+```bash
+curl -s -X POST "https://api.apollo.io/api/v1/mixed_companies/search?organization_locations[]=Portugal&organization_num_employees_ranges[]=1,10&organization_num_employees_ranges[]=11,50&organization_num_employees_ranges[]=51,200&q_organization_keyword_tags[]=real%20estate&page=1&per_page=25" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $APOLLO_API_KEY" \
+  -H "Cache-Control: no-cache"
+```
+
+**Returns:** Organizations (id, name, website_url, primary_domain, phone). Use `organization_ids[]` from results in People API Search to find contacts at those companies.
+
+**Key params:** `organization_locations[]`, `organization_num_employees_ranges[]`, `q_organization_keyword_tags[]` (e.g. "real estate"), `page`, `per_page`.
+
+---
 
 ## Filters Applied (ICP-aligned)
 
@@ -89,6 +113,7 @@ ICP match reason: [1-sentence reason why this contact matches the ICP]
 
 - If `APOLLO_API_KEY` is not set → abort with: "Error: APOLLO_API_KEY env var not set. Add it to ~/.openclaw/.env"
 - If API returns 401 → abort with: "Error: Apollo API key invalid or expired"
+- If API returns 403 / API_INACCESSIBLE → "This endpoint requires a paid Apollo plan. Upgrade at app.apollo.io"
 - If API returns 0 results → report: "No leads found for this filter. Try broadening location or segment."
 - If API returns 429 → wait 60s and retry once, then abort with rate limit message
 
