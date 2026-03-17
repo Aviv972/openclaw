@@ -26,36 +26,39 @@ fi
 
 himalaya --version || true
 
-# Create himalaya config
+# Create himalaya config (pimalaya format - backend.type, not incoming/outgoing)
 mkdir -p ~/.config/himalaya
-cat > ~/.config/himalaya/config.toml << EOF
+cat > ~/.config/himalaya/config.toml << 'CONFIGEOF'
 [accounts.proprooster]
-email = "$GMAIL"
+email = "EMAIL_PLACEHOLDER"
 display-name = "PropRooster"
 default = true
 
-[accounts.proprooster.incoming]
-type = "imap"
-host = "imap.gmail.com"
-port = 993
-encryption = "ssl"
-login = "$GMAIL"
-auth.type = "password"
-auth.raw = "\${GMAIL_APP_PASSWORD}"
+# IMAP backend (pimalaya uses backend.* not incoming)
+backend.type = "imap"
+backend.host = "imap.gmail.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.login = "EMAIL_PLACEHOLDER"
+backend.auth.type = "password"
+backend.auth.cmd = "grep GMAIL_APP_PASSWORD ~/.openclaw/.env | cut -d= -f2-"
 
-[accounts.proprooster.outgoing]
-type = "smtp"
-host = "smtp.gmail.com"
-port = 465
-encryption = "ssl"
-login = "$GMAIL"
-auth.type = "password"
-auth.raw = "\${GMAIL_APP_PASSWORD}"
-EOF
+# SMTP backend for sending
+message.send.backend.type = "smtp"
+message.send.backend.host = "smtp.gmail.com"
+message.send.backend.port = 465
+message.send.backend.encryption.type = "tls"
+message.send.backend.login = "EMAIL_PLACEHOLDER"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.cmd = "grep GMAIL_APP_PASSWORD ~/.openclaw/.env | cut -d= -f2-"
+CONFIGEOF
+
+# Replace placeholder with actual email
+sed -i "s/EMAIL_PLACEHOLDER/$GMAIL/g" ~/.config/himalaya/config.toml
 
 echo "Config written to ~/.config/himalaya/config.toml"
 echo ""
-echo "Ensure GMAIL_APP_PASSWORD is in ~/.openclaw/.env (it's loaded by the gateway)."
+echo "Ensure GMAIL_APP_PASSWORD is in ~/.openclaw/.env"
 echo "Then restart: systemctl --user restart openclaw-gateway"
 echo ""
-echo "Test: GMAIL_APP_PASSWORD=\$(grep GMAIL_APP_PASSWORD ~/.openclaw/.env | cut -d= -f2-) himalaya list --account proprooster"
+echo "Test: himalaya envelope list --account proprooster"
