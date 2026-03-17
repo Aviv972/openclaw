@@ -1,5 +1,17 @@
 # Cold Outreach Playbook
 
+## Lead Eligibility Gate (MANDATORY — before any send)
+
+**Only send to NEW leads.** Before adding any lead to a campaign or sending any email:
+
+1. **Check `memory-context.md`** — both sections:
+   - **Partners Contacted (do not re-contact):** If the lead's agency/domain is listed → skip. Do not add to campaign.
+   - **Do Not Contact Domains:** If the lead's email domain matches any entry → skip. Do not add to campaign.
+2. **Cross-reference:** For every Apollo/Instantly lead, verify the email domain is NOT in either list.
+3. **When in doubt:** Do not send. Prefer skipping a lead over risking a re-contact.
+
+---
+
 ## Email 1 — Cold Intro
 
 **Timing:** Day 0 (first contact)
@@ -57,6 +69,7 @@
 
 ## Sequence Rules
 
+- **New leads only:** Never add a lead to a campaign without first checking memory-context (Partners Contacted + Do Not Contact Domains). Re-contacts are forbidden.
 - **Cal.com link:** Email 1 only — never in Email 2 or 3
 - **Max 3 emails per contact** — no exceptions
 - **Reply received:** Pause sequence immediately. Alert Aviv on Telegram bot chat immediately with contact name, agency, email, and the reply content.

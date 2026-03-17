@@ -6,6 +6,12 @@
 
 ---
 
+## RESTRICTION: New Leads Only
+
+**The agent must only send emails to NEW leads.** Before adding any lead to a campaign, the agent MUST check both "Partners Contacted" and "Do Not Contact Domains" below. If a lead's agency or email domain appears in either list → do not contact. Skip the lead.
+
+---
+
 ## Active Pilots
 
 | Agency | Status | Notes |
