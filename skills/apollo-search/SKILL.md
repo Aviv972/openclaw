@@ -6,7 +6,7 @@ metadata:
     emoji: 🔍
     requires:
       bins:
-        - xurl
+        - curl
     env:
       - APOLLO_API_KEY
 ---
@@ -48,7 +48,7 @@ apollo-search segment="luxury"
 The skill calls Apollo's People Search endpoint:
 
 ```bash
-xurl POST https://api.apollo.io/v1/mixed_people/search \
+curl -s -X POST https://api.apollo.io/v1/mixed_people/search \
   -H "Content-Type: application/json" \
   -H "Cache-Control: no-cache" \
   -d '{

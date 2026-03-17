@@ -85,15 +85,21 @@ openclaw config set channels.telegram.token $TELEGRAM_BOT_TOKEN
 # 5. Set Telegram log channel (reports go here — not to bot chat)
 openclaw config set channels.telegram.log_channel "#proprooster-outreach-log"
 
-# 6. Load agent context files as system prompt injections
-openclaw config set agent.context.files "agent-context/icp.md,agent-context/outreach-playbook.md,agent-context/memory-context.md"
-
-# 7. Register custom skills
+# 6. Register custom skills
 openclaw skills register skills/apollo-search/SKILL.md
 openclaw skills register skills/instantly-campaign/SKILL.md
 openclaw skills register skills/calcom-booking/SKILL.md
 
-# 8. Verify full config
+# 7. Set workspace (so agent finds project files)
+openclaw config set agents.defaults.workspace /root/OpenClaw
+
+# 8. Load agent context via shared bootstrap (ICP, playbook, memory)
+mkdir -p ~/.openclaw/shared
+cp /root/OpenClaw/agent-context/icp.md ~/.openclaw/shared/SHARED_icp.md
+cp /root/OpenClaw/agent-context/outreach-playbook.md ~/.openclaw/shared/SHARED_outreach-playbook.md
+cp /root/OpenClaw/agent-context/memory-context.md ~/.openclaw/shared/SHARED_memory-context.md
+
+# 9. Verify full config
 openclaw config list
 ```
 
@@ -101,6 +107,23 @@ openclaw config list
 
 ```bash
 openclaw channels status --probe
+```
+
+### Verify agent context is loaded
+
+Run these on the VPS to confirm the agent has access to ICP, playbook, and memory:
+
+```bash
+# 1. Check shared bootstrap files exist (OpenClaw auto-injects SHARED_*.md)
+ls -la ~/.openclaw/shared/
+# Should show: SHARED_icp.md, SHARED_memory-context.md, SHARED_outreach-playbook.md
+
+# 2. Check config
+openclaw config list
+
+# 3. If gateway is running, restart it so it picks up shared files
+pkill -f openclaw-gateway 2>/dev/null || true
+nohup openclaw gateway run --bind loopback --port 18789 > /tmp/openclaw-gateway.log 2>&1 &
 ```
 
 ---
