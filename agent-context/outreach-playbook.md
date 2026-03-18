@@ -2,15 +2,22 @@
 
 ## Lead Sourcing from CSV (MANDATORY — do NOT simulate)
 
-**CSV path:** `docs/PT-luxury-agencies.csv` (full path on VPS: `/root/OpenClaw/docs/PT-luxury-agencies.csv`). If read fails, use this domain list: portadafrente.com, sothebysrealtypt.com, engelvoelkers.com, remax.pt, portugalbuyersagent.com, portugalhomes.com, kwportugal.pt, portugalproperty.com, fineandcountry.pt, barnes-portugal.com, quintelaepenalva.pt, dils.pt, lisbonestates.com
+### Step 1: Get domains — use READ tool (NOT web_fetch)
+The CSV is a **local file** in your workspace. Use the **read** tool:
+- Path: `docs/PT-luxury-agencies.csv`
+- Do NOT use web_fetch for the CSV — it is not a URL. Use **read** to open the file.
 
-**You MUST call web_fetch for real data.** Do NOT invent or simulate contacts. Steps:
+If read fails, use this list: portadafrente.com, sothebysrealtypt.com, engelvoelkers.com, portugalhomes.com, dils.pt, barnes-portugal.com, kwportugal.pt, lisbonestates.com
 
-1. **Read** `docs/PT-luxury-agencies.csv` (or use the domain list above if file read fails).
-2. **Extract domain** from each Website (e.g. `https://www.portadafrente.com` → `portadafrente.com`).
-3. **Call web_fetch** for each domain: `http://127.0.0.1:17892/find_people?domain=portadafrente.com` (replace with actual domain). Run the real API call.
-4. **Use Datagma response** — if `{"code":5,"message":"Not found"}` skip that domain. If contacts returned, use name/title/email for drafts.
-5. **Limit** — max ~9 domains per run (Datagma free tier).
+### Step 2: Get contacts — use web_fetch on LOCAL proxy (NOT Datagma API)
+Call **web_fetch** with this exact URL pattern (replace DOMAIN):
+```
+http://127.0.0.1:17892/find_people?domain=portadafrente.com
+```
+- Use `http://127.0.0.1:17892/find_people?domain=DOMAIN` — the proxy runs on the same machine as the gateway.
+- Do NOT fetch `https://gateway.datagma.net/...` — that will fail. Use the local proxy URL only.
+- If response is `{"code":5,"message":"Not found"}` → skip that domain. If contacts returned → use them for drafts.
+- Max ~9 domains per run.
 
 ---
 

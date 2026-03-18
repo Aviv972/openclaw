@@ -65,6 +65,6 @@
 
 > Any context Aviv wants the agent to carry into the next cycle.
 
-- **MANDATORY:** Domains from `docs/PT-luxury-agencies.csv` or use: portadafrente.com, sothebysrealtypt.com, engelvoelkers.com, portugalhomes.com, dils.pt, barnes-portugal.com, kwportugal.pt, lisbonestates.com, remax.pt, fineandcountry.pt, quintelaepenalva.pt. Call **web_fetch** `http://127.0.0.1:17892/find_people?domain=DOMAIN` — do NOT simulate.
+- **CSV:** Use **read** on `docs/PT-luxury-agencies.csv` (local file, NOT a URL). **Datagma:** Use **web_fetch** on `http://127.0.0.1:17892/find_people?domain=DOMAIN` only — NOT gateway.datagma.net. Do NOT simulate.
 - First run: use PREVIEW MODE — do not load into Instantly until Aviv reviews lead list and email drafts
 - Inbox warmup status: confirm 2-week warmup is complete before switching to LIVE MODE
