@@ -73,7 +73,7 @@ npm install -g openclaw
 
 ```bash
 # 1. Set agent model (prefix with provider: openai/ or anthropic/)
-openclaw config set agents.defaults.model openai/gpt-5.4-mini
+openclaw config set agents.defaults.model openai/gpt-4.1-mini
 
 # 2. Set timezone (userTimezone for system prompt)
 openclaw config set agents.defaults.userTimezone Europe/Lisbon

@@ -37,7 +37,7 @@ for var in "${OPTIONAL_VARS[@]}"; do
 done
 
 # 1. Agent model (OpenClaw 2026.3+ uses agents.defaults; prefix with provider)
-openclaw config set agents.defaults.model openai/gpt-5.4-mini
+openclaw config set agents.defaults.model openai/gpt-4.1-mini
 
 # 2. Timezone (userTimezone for system prompt)
 openclaw config set agents.defaults.userTimezone Europe/Lisbon
