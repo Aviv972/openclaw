@@ -7,7 +7,7 @@
 1. **Check `memory-context.md`** — both sections:
    - **Partners Contacted (do not re-contact):** If the lead's agency/domain is listed → skip. Do not add to campaign.
    - **Do Not Contact Domains:** If the lead's email domain matches any entry → skip. Do not add to campaign.
-2. **Cross-reference:** For every Apollo/Instantly lead, verify the email domain is NOT in either list.
+2. **Cross-reference:** For every lead (from Apollo, Datagma, Hunter, or manual source), verify the email domain is NOT in either list.
 3. **When in doubt:** Do not send. Prefer skipping a lead over risking a re-contact.
 
 ---
@@ -26,6 +26,7 @@ Before drafting any email, research each lead to find one specific personalisati
    - Recent posts about team growth, new projects, or market activity
    - Contact's tenure and role (how long they've been in position)
    - Any tools or integrations they mention publicly
+   - *Note: Use HTTP to fetch agency website. LinkedIn research is manual — if no hook from web data, use segment-level personalisation.*
 
 3. **Personalisation output** — produce one sentence that can be dropped into Email 1:
    - Format: reference something real and specific (a project, a region, a recent post)
@@ -47,14 +48,14 @@ Before drafting any email, research each lead to find one specific personalisati
 **Body:** 3 sentences maximum
 1. Pain point specific to their segment (WhatsApp volume, unqualified leads, after-hours enquiries)
 2. PropRooster hook — WhatsApp automation for lead qualification, 24/7
-3. Single CTA: 15-minute call, Cal.com link
+3. Single CTA: 15-minute call, Calendly link
 
 **Rules:**
 - No attachments
 - No PDFs
 - No "Espero que este email o encontre bem" or any equivalent filler
 - Reference their specific market if possible (e.g. Algarve luxury, Porto centro)
-- Cal.com link in Email 1 only — do not repeat in later emails
+- Calendly link in Email 1 only — do not repeat in later emails. Use `CALENDLY_BOOKING_URL` from env.
 - Sign off: "Com os melhores cumprimentos" (formal) or "Com cumprimentos" (standard)
 
 ---
@@ -68,7 +69,7 @@ Before drafting any email, research each lead to find one specific personalisati
 **Body:**
 - Reference pilot data: Alma Montijo, PRIORE XXI
 - Use real numbers if available (conversion rates, leads qualified, response time improvement)
-- No Cal.com link — softer touch, build credibility only
+- No Calendly link — softer touch, build credibility only
 - 4–5 sentences max
 - End with an open question, not a CTA
 
@@ -90,12 +91,20 @@ Before drafting any email, research each lead to find one specific personalisati
 
 ---
 
+## Operational Limits (hard — do not exceed)
+
+- **Send cap:** 30 emails per inbox per day (Instantly limit)
+- **Send window:** 09:00–11:00 Europe/Lisbon only
+- **PREVIEW MODE:** First run — do not load into Instantly. Produce lead list + email drafts for Aviv's review. Switch to LIVE only after approval.
+
+---
+
 ## Sequence Rules
 
 - **New leads only:** Never add a lead to a campaign without first checking memory-context (Partners Contacted + Do Not Contact Domains). Re-contacts are forbidden.
-- **Cal.com link:** Email 1 only — never in Email 2 or 3
+- **Calendly link:** Email 1 only — never in Email 2 or 3
 - **Max 3 emails per contact** — no exceptions
-- **Reply received:** Pause sequence immediately. Alert Aviv on Telegram bot chat immediately with contact name, agency, email, and the reply content.
+- **Reply received:** Pause sequence immediately. Post alert to `#proprooster-outreach-log` channel with contact name, agency, email, and the reply content. (Bot chat is for commands only.)
 - **Bounce:** Mark as invalid, remove from sequence, do not retry
 - **Out-of-office:** Do not count as reply. Resume sequence after OOO end date if specified, or after 5 business days
 - **Opt-out/unsubscribe:** Add domain to do-not-contact list in memory-context.md immediately

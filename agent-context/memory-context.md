@@ -55,7 +55,7 @@
 
 ## Booking Log
 
-> Demo calls booked via Cal.com. Update as bookings come in.
+> Demo calls booked via Calendly. Update as bookings come in.
 
 - [none yet]
 

@@ -37,7 +37,7 @@ for var in "${OPTIONAL_VARS[@]}"; do
 done
 
 # 1. Agent model
-openclaw config set agent.model gpt-4.1-mini
+openclaw config set agent.model gpt-5.4-mini
 
 # 2. Timezone
 openclaw config set agent.timezone Europe/Lisbon
@@ -62,6 +62,7 @@ echo "Agent context loaded: SHARED_icp.md, SHARED_outreach-playbook.md, SHARED_m
 # 7. Register custom skills (run from repo root)
 cd "$REPO_ROOT"
 openclaw skills register skills/apollo-search/SKILL.md
+openclaw skills register skills/datagma-search/SKILL.md
 if [ -n "${INSTANTLY_API_KEY:-}" ]; then
   openclaw skills register skills/instantly-campaign/SKILL.md
 else

@@ -41,8 +41,9 @@ Add all of these to `~/.openclaw/.env` on the VPS before starting the gateway.
 | `ANTHROPIC_API_KEY` | Claude API key (Sonnet minimum) | console.anthropic.com |
 | `TELEGRAM_BOT_TOKEN` | Bot token from @BotFather | Telegram → @BotFather → /newbot |
 | `APOLLO_API_KEY` | Apollo People Search API key | app.apollo.io → Settings → API |
+| `DATAGMA_API_KEY` | Datagma Find People API key (testing) | app.datagma.com → API |
 | `INSTANTLY_API_KEY` | Instantly campaign API key | app.instantly.ai → Settings → API |
-| `CALCOM_API_KEY` | Cal.com v1 API key | app.cal.com → Settings → Developer → API Keys |
+| `CALENDLY_BOOKING_URL` | PropRooster Demo booking link (used in Email 1 CTA) | Calendly → Create "PropRooster Demo" event type → copy public link (e.g. `https://calendly.com/your-username/proprooster-demo`) |
 | `GMAIL_APP_PASSWORD` | Gmail App Password for himalaya IMAP/SMTP | Google Account → Security → App Passwords |
 
 ### `.env` template
@@ -52,8 +53,9 @@ Add all of these to `~/.openclaw/.env` on the VPS before starting the gateway.
 ANTHROPIC_API_KEY=sk-ant-...
 TELEGRAM_BOT_TOKEN=...
 APOLLO_API_KEY=...
+DATAGMA_API_KEY=...
 INSTANTLY_API_KEY=...
-CALCOM_API_KEY=...
+CALENDLY_BOOKING_URL=https://calendly.com/your-username/proprooster-demo
 GMAIL_APP_PASSWORD=...
 ```
 
@@ -70,8 +72,8 @@ npm install -g openclaw
 ### Configuration sequence (8 steps — run in order)
 
 ```bash
-# 1. Set agent model (Claude Sonnet minimum — do not downgrade)
-openclaw config set agent.model claude-sonnet-4-6
+# 1. Set agent model (GPT-5.4-mini or Claude Sonnet minimum)
+openclaw config set agent.model gpt-5.4-mini
 
 # 2. Set timezone
 openclaw config set agent.timezone Europe/Lisbon
@@ -87,8 +89,8 @@ openclaw config set channels.telegram.log_channel "#proprooster-outreach-log"
 
 # 6. Register custom skills
 openclaw skills register skills/apollo-search/SKILL.md
+openclaw skills register skills/datagma-search/SKILL.md
 openclaw skills register skills/instantly-campaign/SKILL.md
-openclaw skills register skills/calcom-booking/SKILL.md
 
 # 7. Set workspace (so agent finds project files)
 openclaw config set agents.defaults.workspace /root/OpenClaw
@@ -174,6 +176,26 @@ himalaya list --account proprooster
 
 ---
 
+## 5b. Datagma (Testing — CSV company list)
+
+For testing without Apollo paid plan, use Datagma with the CSV company list.
+
+1. Get API key at [app.datagma.com](https://app.datagma.com/)
+2. Add `DATAGMA_API_KEY` to `~/.openclaw/.env`
+3. Register skill: `openclaw skills register skills/datagma-search/SKILL.md`
+4. Test with CSV domains:
+
+```bash
+# Quick test (first domain from CSV)
+bash docs/test-datagma-csv.sh
+
+# Or via agent: datagma-search domain="avenueliving.pt" job_title="Marketing Manager OR Director"
+```
+
+CSV: `docs/Developers & real estate agencies - Developers.csv` — extract domains from Website column. Free tier: 90 credits/month (10 per Find People search).
+
+---
+
 ## 6. Persistent Gateway (nohup)
 
 ### Start gateway
@@ -234,12 +256,12 @@ systemctl status openclaw
 
 ## 7. Pre-Flight Checklist (Before First Run)
 
-- [ ] All 6 env vars set in `~/.openclaw/.env`
+- [ ] All required env vars set in `~/.openclaw/.env` (including `CALENDLY_BOOKING_URL`)
 - [ ] `openclaw config list` shows correct model, timezone, memory enabled
 - [ ] `openclaw channels status --probe` returns Telegram OK
 - [ ] himalaya can list Gmail inbox: `himalaya list --account proprooster`
 - [ ] Instantly inbox warmup: 2 weeks complete
-- [ ] Cal.com "PropRooster Demo" event type created and tested
+- [ ] Calendly "PropRooster Demo" event type created, link in `CALENDLY_BOOKING_URL`
 - [ ] Apollo saved search returns PT real estate leads
 - [ ] First run: use PREVIEW MODE (see Phase 4 in proprooster-openclaw-plan.md)
 
