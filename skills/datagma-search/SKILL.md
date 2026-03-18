@@ -17,18 +17,22 @@ Find people at a specific company by domain and job title. Ideal for enriching a
 
 **Cost:** 10 credits per successful search, 1 credit per failed search. Free tier: 90 credits/month.
 
-## Usage
+## How to invoke (IMPORTANT)
 
-Find Marketing/Sales contacts at a developer or agency:
+There is no `datagma-search` command. You MUST use the **exec** tool to run the curl command below. Replace `$DOMAIN` and `$JOB_TITLE` with actual values. Load `DATAGMA_API_KEY` from `~/.openclaw/.env` (e.g. `grep DATAGMA_API_KEY ~/.openclaw/.env | cut -d= -f2-`).
 
-```
-datagma-search domain="avenueliving.pt" job_title="Marketing Manager OR Sales Manager OR Director"
-```
+## Usage examples
 
-Find with broader job titles:
+For domain `avenueliving.pt`:
 
 ```
-datagma-search domain="kronoshomes.pt" job_title="Director OR Owner OR Partner"
+exec: curl -s -G "https://gateway.datagma.net/api/ingress/v1/find_people" --data-urlencode "apiId=$(grep DATAGMA_API_KEY ~/.openclaw/.env | cut -d= -f2-)" --data-urlencode "domain=avenueliving.pt" --data-urlencode "currentJobTitle=Marketing Manager OR Sales Manager OR Director OR Owner" --data-urlencode "countries=portugal"
+```
+
+For domain `kronoshomes.pt`:
+
+```
+exec: curl -s -G "https://gateway.datagma.net/api/ingress/v1/find_people" --data-urlencode "apiId=$(grep DATAGMA_API_KEY ~/.openclaw/.env | cut -d= -f2-)" --data-urlencode "domain=kronoshomes.pt" --data-urlencode "currentJobTitle=Marketing Manager OR Sales Manager OR Director OR Owner" --data-urlencode "countries=portugal"
 ```
 
 ## Parameters
@@ -89,7 +93,7 @@ Use `docs/Developers & real estate agencies - Developers.csv`. Extract domains f
 | valedolobo.com | Vale do Lobo |
 | quintaproperty.com | QP Savills |
 
-Run `datagma-search` for each domain with `job_title="Marketing Manager OR Sales Manager OR Director OR Owner"`.
+Use the **exec** tool to run the curl command for each domain. Do not simulate — run the real API call.
 
 ## Error Handling
 
