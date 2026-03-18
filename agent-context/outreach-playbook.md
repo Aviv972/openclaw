@@ -1,5 +1,16 @@
 # Cold Outreach Playbook
 
+## Lead Sourcing from CSV (when using company list)
+
+When processing a CSV of developers/agencies (e.g. `docs/Developers & real estate agencies - Developers.csv`):
+
+1. **Extract domains** from the Website column (e.g. `https://avenueliving.pt` → `avenueliving.pt`).
+2. **Invoke `datagma-search`** for each domain — use the real skill, do NOT simulate. Example: `datagma-search domain="avenueliving.pt" job_title="Marketing Manager OR Sales Manager OR Director OR Owner"`.
+3. **Use returned contacts** (name, title, email if present) for Email 1 drafts. If Datagma returns no results for a domain, skip that company and try the next.
+4. **Respect credit limits** — Datagma free tier: 90 credits/month (10 per Find People search). Limit to ~9 domains per run on free tier.
+
+---
+
 ## Lead Eligibility Gate (MANDATORY — before any send)
 
 **Only send to NEW leads.** Before adding any lead to a campaign or sending any email:
