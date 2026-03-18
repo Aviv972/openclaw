@@ -98,8 +98,8 @@ cp /root/OpenClaw/agent-context/icp.md ~/.openclaw/shared/SHARED_icp.md
 cp /root/OpenClaw/agent-context/outreach-playbook.md ~/.openclaw/shared/SHARED_outreach-playbook.md
 cp /root/OpenClaw/agent-context/memory-context.md ~/.openclaw/shared/SHARED_memory-context.md
 
-# 9. Verify full config
-openclaw config list
+# 9. Verify (OpenClaw 2026.3: config list may have different syntax)
+# openclaw config
 ```
 
 ### Verify Telegram connectivity
@@ -254,7 +254,7 @@ systemctl status openclaw
 ## 7. Pre-Flight Checklist (Before First Run)
 
 - [ ] All required env vars set in `~/.openclaw/.env` (including `CALENDLY_BOOKING_URL`)
-- [ ] `openclaw config list` shows correct model, timezone, memory enabled
+- [ ] Config in ~/.openclaw/openclaw.json shows model, timezone, workspace
 - [ ] `openclaw channels status --probe` returns Telegram OK
 - [ ] himalaya can list Gmail inbox: `himalaya list --account proprooster`
 - [ ] Instantly inbox warmup: 2 weeks complete
