@@ -51,28 +51,18 @@ openclaw config set channels.telegram.botToken "$TELEGRAM_BOT_TOKEN"
 # 5. Log channel (reports go here — skip if not supported)
 openclaw config set channels.telegram.log_channel "#proprooster-outreach-log" 2>/dev/null || true
 
-# 6. Agent context via shared bootstrap (OpenClaw 2026.3+ auto-injects SHARED_*.md)
-mkdir -p "$HOME/.openclaw/shared"
+# 6. Workspace + agent context (skills auto-load from workspace/skills/)
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+openclaw config set agents.defaults.workspace "$REPO_ROOT"
+mkdir -p "$HOME/.openclaw/shared"
 cp "$REPO_ROOT/agent-context/icp.md" "$HOME/.openclaw/shared/SHARED_icp.md"
 cp "$REPO_ROOT/agent-context/outreach-playbook.md" "$HOME/.openclaw/shared/SHARED_outreach-playbook.md"
 cp "$REPO_ROOT/agent-context/memory-context.md" "$HOME/.openclaw/shared/SHARED_memory-context.md"
 echo "Agent context loaded: SHARED_icp.md, SHARED_outreach-playbook.md, SHARED_memory-context.md"
 
-# 7. Register custom skills (run from repo root)
-cd "$REPO_ROOT"
-openclaw skills register skills/apollo-search/SKILL.md
-openclaw skills register skills/datagma-search/SKILL.md
-if [ -n "${INSTANTLY_API_KEY:-}" ]; then
-  openclaw skills register skills/instantly-campaign/SKILL.md
-else
-  echo "SKIP: instantly-campaign skill (INSTANTLY_API_KEY not set)"
-fi
-if [ -n "${CALCOM_API_KEY:-}" ]; then
-  openclaw skills register skills/calcom-booking/SKILL.md
-else
-  echo "SKIP: calcom-booking skill (CALCOM_API_KEY not set)"
-fi
+# 7. Skills are auto-loaded from workspace (agents.defaults.workspace=/root/OpenClaw)
+#    Skills in skills/apollo-search, skills/datagma-search, etc. are discovered automatically.
+#    No "openclaw skills register" needed in OpenClaw 2026.3.
 
 # 8. Verify
 echo ""

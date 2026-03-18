@@ -87,10 +87,7 @@ openclaw config set channels.telegram.botToken $TELEGRAM_BOT_TOKEN
 # 5. Set Telegram log channel (reports go here — skip if not supported)
 openclaw config set channels.telegram.log_channel "#proprooster-outreach-log" 2>/dev/null || true
 
-# 6. Register custom skills
-openclaw skills register skills/apollo-search/SKILL.md
-openclaw skills register skills/datagma-search/SKILL.md
-openclaw skills register skills/instantly-campaign/SKILL.md
+# 6. Skills auto-load from workspace (skills/ subdir). No register command needed.
 
 # 7. Set workspace (so agent finds project files)
 openclaw config set agents.defaults.workspace /root/OpenClaw
