@@ -66,9 +66,5 @@ echo "Agent context loaded: SHARED_icp.md, SHARED_outreach-playbook.md, SHARED_m
 
 # 8. Verify
 echo ""
-echo "=== OpenClaw config ==="
-openclaw config list
-
-echo ""
 echo "=== Probing Telegram channel ==="
 openclaw channels status --probe
