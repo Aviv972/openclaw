@@ -2,11 +2,11 @@
 
 ## Lead Sourcing from CSV (MANDATORY — do NOT simulate)
 
-**You MUST use `docs/PT-luxury-agencies.csv`** — NOT the developers CSV. Agencies: Porta da Frente, Sotheby's, Engel & Völkers, Portugal Homes, DILS, Barnes, Keller Williams, Lisbon Estates, etc.
+**CSV path:** `docs/PT-luxury-agencies.csv` (full path on VPS: `/root/OpenClaw/docs/PT-luxury-agencies.csv`). If read fails, use this domain list: portadafrente.com, sothebysrealtypt.com, engelvoelkers.com, remax.pt, portugalbuyersagent.com, portugalhomes.com, kwportugal.pt, portugalproperty.com, fineandcountry.pt, barnes-portugal.com, quintelaepenalva.pt, dils.pt, lisbonestates.com
 
 **You MUST call web_fetch for real data.** Do NOT invent or simulate contacts. Steps:
 
-1. **Read** `docs/PT-luxury-agencies.csv` — get Agency and Website columns.
+1. **Read** `docs/PT-luxury-agencies.csv` (or use the domain list above if file read fails).
 2. **Extract domain** from each Website (e.g. `https://www.portadafrente.com` → `portadafrente.com`).
 3. **Call web_fetch** for each domain: `http://127.0.0.1:17892/find_people?domain=portadafrente.com` (replace with actual domain). Run the real API call.
 4. **Use Datagma response** — if `{"code":5,"message":"Not found"}` skip that domain. If contacts returned, use name/title/email for drafts.
