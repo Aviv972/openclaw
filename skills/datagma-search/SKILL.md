@@ -19,21 +19,17 @@ Find people at a specific company by domain and job title. Ideal for enriching a
 
 ## How to invoke (IMPORTANT)
 
-There is no `datagma-search` command. You MUST use the **exec** tool to run the curl command below. Replace `$DOMAIN` and `$JOB_TITLE` with actual values. Load `DATAGMA_API_KEY` from `~/.openclaw/.env` (e.g. `grep DATAGMA_API_KEY ~/.openclaw/.env | cut -d= -f2-`).
-
-## Usage examples
-
-For domain `avenueliving.pt`:
+There is no `datagma-search` command. You MUST use the **exec** tool to run the script:
 
 ```
-exec: curl -s -G "https://gateway.datagma.net/api/ingress/v1/find_people" --data-urlencode "apiId=$(grep DATAGMA_API_KEY ~/.openclaw/.env | cut -d= -f2-)" --data-urlencode "domain=avenueliving.pt" --data-urlencode "currentJobTitle=Marketing Manager OR Sales Manager OR Director OR Owner" --data-urlencode "countries=portugal"
+exec: bash /root/OpenClaw/scripts/datagma-search.sh DOMAIN
 ```
 
-For domain `kronoshomes.pt`:
+Replace `DOMAIN` with the company domain (e.g. `avenueliving.pt`, `kronoshomes.pt`). Optional second arg: job title (default: "Marketing Manager OR Sales Manager OR Director OR Owner").
 
-```
-exec: curl -s -G "https://gateway.datagma.net/api/ingress/v1/find_people" --data-urlencode "apiId=$(grep DATAGMA_API_KEY ~/.openclaw/.env | cut -d= -f2-)" --data-urlencode "domain=kronoshomes.pt" --data-urlencode "currentJobTitle=Marketing Manager OR Sales Manager OR Director OR Owner" --data-urlencode "countries=portugal"
-```
+Examples:
+- `exec: bash /root/OpenClaw/scripts/datagma-search.sh avenueliving.pt`
+- `exec: bash /root/OpenClaw/scripts/datagma-search.sh kronoshomes.pt`
 
 ## Parameters
 
