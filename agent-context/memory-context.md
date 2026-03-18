@@ -65,6 +65,6 @@
 
 > Any context Aviv wants the agent to carry into the next cycle.
 
-- **Datagma lead lookup:** Use **web_fetch** with URL: `http://127.0.0.1:17892/find_people?domain=DOMAIN`. Replace DOMAIN with the company domain (e.g. avenueliving.pt). Do NOT simulate. Run the real API call.
+- **MANDATORY:** Use `docs/PT-luxury-agencies.csv` (luxury agencies). Call **web_fetch** `http://127.0.0.1:17892/find_people?domain=DOMAIN` for each domain — do NOT simulate contacts. Use Calendly URL from `CALENDLY_BOOKING_URL`, never "[Cal.com link]".
 - First run: use PREVIEW MODE — do not load into Instantly until Aviv reviews lead list and email drafts
 - Inbox warmup status: confirm 2-week warmup is complete before switching to LIVE MODE

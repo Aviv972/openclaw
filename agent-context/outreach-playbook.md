@@ -1,13 +1,16 @@
 # Cold Outreach Playbook
 
-## Lead Sourcing from CSV (when using company list)
+## Lead Sourcing from CSV (MANDATORY — do NOT simulate)
 
-When processing a CSV of developers/agencies (e.g. `docs/Developers & real estate agencies - Developers.csv`):
+**You MUST use `docs/PT-luxury-agencies.csv`** — NOT the developers CSV. Agencies: Porta da Frente, Sotheby's, Engel & Völkers, Portugal Homes, DILS, Barnes, Keller Williams, Lisbon Estates, etc.
 
-1. **Extract domains** from the Website column (e.g. `https://avenueliving.pt` → `avenueliving.pt`).
-2. **Use web_fetch** — Fetch `http://127.0.0.1:17892/find_people?domain=DOMAIN` for each domain. Do NOT simulate. Example: `http://127.0.0.1:17892/find_people?domain=avenueliving.pt`
-3. **Use returned contacts** (name, title, email if present) for Email 1 drafts. If Datagma returns no results for a domain, skip that company and try the next.
-4. **Respect credit limits** — Datagma free tier: 90 credits/month (10 per Find People search). Limit to ~9 domains per run on free tier.
+**You MUST call web_fetch for real data.** Do NOT invent or simulate contacts. Steps:
+
+1. **Read** `docs/PT-luxury-agencies.csv` — get Agency and Website columns.
+2. **Extract domain** from each Website (e.g. `https://www.portadafrente.com` → `portadafrente.com`).
+3. **Call web_fetch** for each domain: `http://127.0.0.1:17892/find_people?domain=portadafrente.com` (replace with actual domain). Run the real API call.
+4. **Use Datagma response** — if `{"code":5,"message":"Not found"}` skip that domain. If contacts returned, use name/title/email for drafts.
+5. **Limit** — max ~9 domains per run (Datagma free tier).
 
 ---
 
@@ -66,7 +69,7 @@ Before drafting any email, research each lead to find one specific personalisati
 - No PDFs
 - No "Espero que este email o encontre bem" or any equivalent filler
 - Reference their specific market if possible (e.g. Algarve luxury, Porto centro)
-- Calendly link in Email 1 only — do not repeat in later emails. Use `CALENDLY_BOOKING_URL` from env.
+- Calendly link in Email 1 only — do not repeat in later emails. Use the actual `CALENDLY_BOOKING_URL` from env (e.g. https://calendly.com/...). Never write "[Cal.com link]" — use the real URL.
 - Sign off: "Com os melhores cumprimentos" (formal) or "Com cumprimentos" (standard)
 
 ---
