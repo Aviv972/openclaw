@@ -1,23 +1,19 @@
 # Cold Outreach Playbook
 
-## Lead Sourcing from CSV (MANDATORY — do NOT simulate)
+## Lead Sourcing (MANDATORY — do NOT simulate)
 
-### Step 1: Get domains — use READ tool (NOT web_fetch)
-The CSV is a **local file** in your workspace. Use the **read** tool:
-- Path: `docs/PT-luxury-agencies.csv`
-- Do NOT use web_fetch for the CSV — it is not a URL. Use **read** to open the file.
-
-If read fails, use this list: portadafrente.com, sothebysrealtypt.com, engelvoelkers.com, portugalhomes.com, dils.pt, barnes-portugal.com, kwportugal.pt, lisbonestates.com
-
-### Step 2: Get contacts — use web_fetch on LOCAL proxy (NOT Datagma API)
-Call **web_fetch** with this exact URL pattern (replace DOMAIN):
+### Step 1: Search Apollo People API
+Use the **exec** tool to run:
 ```
-http://127.0.0.1:17892/find_people?domain=portadafrente.com
+bash /root/OpenClaw/scripts/apollo-search.sh
 ```
-- Use `http://127.0.0.1:17892/find_people?domain=DOMAIN` — the proxy runs on the same machine as the gateway.
-- Do NOT fetch `https://gateway.datagma.net/...` — that will fail. Use the local proxy URL only.
-- If response is `{"code":5,"message":"Not found"}` → skip that domain. If contacts returned → use them for drafts.
-- Max ~9 domains per run.
+This searches the Apollo People API for PT real estate leads matching the ICP (Portugal, Real Estate, C-suite/Director/Owner, 10–200 employees).
+
+### Step 2: Use Apollo results directly
+Apollo is the **only** lead source. The script returns contacts with name, title, organisation, and (via enrichment) email.
+- Use the returned contacts directly — no CSV cross-referencing needed.
+- If Apollo returns 0 results, try broadening the location filter (e.g. `bash /root/OpenClaw/scripts/apollo-search.sh Lisbon 25` or `Porto`).
+- If the API is inaccessible (401/403/429), report the error to Aviv — do not simulate or fabricate contacts.
 
 ---
 
@@ -28,7 +24,7 @@ http://127.0.0.1:17892/find_people?domain=portadafrente.com
 1. **Check `memory-context.md`** — both sections:
    - **Partners Contacted (do not re-contact):** If the lead's agency/domain is listed → skip. Do not add to campaign.
    - **Do Not Contact Domains:** If the lead's email domain matches any entry → skip. Do not add to campaign.
-2. **Cross-reference:** For every lead (from Apollo, Datagma, Hunter, or manual source), verify the email domain is NOT in either list.
+2. **Cross-reference:** For every lead (from Apollo or manual source), verify the email domain is NOT in either list.
 3. **When in doubt:** Do not send. Prefer skipping a lead over risking a re-contact.
 
 ---
@@ -76,7 +72,7 @@ Before drafting any email, research each lead to find one specific personalisati
 - No PDFs
 - No "Espero que este email o encontre bem" or any equivalent filler
 - Reference their specific market if possible (e.g. Algarve luxury, Porto centro)
-- Calendly link in Email 1 only — do not repeat in later emails. Use the actual `CALENDLY_BOOKING_URL` from env (e.g. https://calendly.com/...). Never write "[Cal.com link]" — use the real URL.
+- Calendly link in Email 1 only — do not repeat in later emails. Use the actual `CALENDLY_BOOKING_URL` from env (e.g. https://calendly.com/...). Never write placeholder text — always use the real URL.
 - Sign off: "Com os melhores cumprimentos" (formal) or "Com cumprimentos" (standard)
 
 ---
@@ -123,7 +119,7 @@ Before drafting any email, research each lead to find one specific personalisati
 ## Sequence Rules
 
 - **New leads only:** Never add a lead to a campaign without first checking memory-context (Partners Contacted + Do Not Contact Domains). Re-contacts are forbidden.
-- **Calendly link:** Email 1 only — never in Email 2 or 3
+- **Calendly link:** Email 1 only — never in Email 2 or 3. Always use the real `CALENDLY_BOOKING_URL`.
 - **Max 3 emails per contact** — no exceptions
 - **Reply received:** Pause sequence immediately. Post alert to `#proprooster-outreach-log` channel with contact name, agency, email, and the reply content. (Bot chat is for commands only.)
 - **Bounce:** Mark as invalid, remove from sequence, do not retry

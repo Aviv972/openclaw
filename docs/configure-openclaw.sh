@@ -28,8 +28,8 @@ for var in "${REQUIRED_VARS[@]}"; do
 done
 echo "All required env vars present"
 
-# Warn on optional vars (Instantly, Cal.com, Gmail — not needed for preview test)
-OPTIONAL_VARS=(INSTANTLY_API_KEY CALCOM_API_KEY GMAIL_APP_PASSWORD)
+# Warn on optional vars (Instantly, Gmail — not needed for preview test)
+OPTIONAL_VARS=(INSTANTLY_API_KEY GMAIL_APP_PASSWORD)
 for var in "${OPTIONAL_VARS[@]}"; do
   if [ -z "${!var:-}" ]; then
     echo "WARN: $var is not set — skipping related skill registration"
@@ -60,7 +60,7 @@ cp "$REPO_ROOT/agent-context/outreach-playbook.md" "$HOME/.openclaw/shared/SHARE
 cp "$REPO_ROOT/agent-context/memory-context.md" "$HOME/.openclaw/shared/SHARED_memory-context.md"
 echo "Agent context loaded: SHARED_icp.md, SHARED_outreach-playbook.md, SHARED_memory-context.md"
 
-# 7. Enable exec tool for Datagma script (runs on gateway for network access)
+# 7. Enable exec tool for Apollo/custom scripts (runs on gateway for network access)
 #    tools.profile=full ensures exec is available (coding/minimal/messaging omit it)
 openclaw config set tools.profile full 2>/dev/null || true
 openclaw config set tools.exec.host gateway 2>/dev/null || true
@@ -68,19 +68,8 @@ openclaw config set tools.exec.security full 2>/dev/null || true
 # Remove any provider-specific narrowing that might block exec
 openclaw config unset tools.byProvider 2>/dev/null || true
 
-# 7b. Exec approvals for headless gateway — allow Datagma script without prompts
-#     (No UI on VPS; security=full lets bash scripts run. Restrict if needed.)
-EXEC_APPROVALS="$HOME/.openclaw/exec-approvals.json"
-if [ ! -f "$EXEC_APPROVALS" ]; then
-  mkdir -p "$(dirname "$EXEC_APPROVALS")"
-  cp "$REPO_ROOT/docs/exec-approvals.json.template" "$EXEC_APPROVALS"
-  echo "Created $EXEC_APPROVALS (security=full for headless)"
-else
-  echo "exec-approvals.json exists — not overwriting (edit manually if needed)"
-fi
-
 # 8. Skills are auto-loaded from workspace (agents.defaults.workspace=/root/OpenClaw)
-#    Skills in skills/apollo-search, skills/datagma-search, etc. are discovered automatically.
+#    Skills in skills/apollo-search, etc. are discovered automatically.
 #    No "openclaw skills register" needed in OpenClaw 2026.3.
 
 # 9. Verify

@@ -16,7 +16,7 @@ OpenClaw Agent  ←──  Skills (ICP · Playbook · Memory context)
       │
       ├──▶ Apollo        →  90+ ICP leads (PT real estate)
       ├──▶ Instantly     →  Campaigns ready to send (warm inboxes)
-      ├──▶ Cal.com       →  Demo meetings auto-booked
+      ├──▶ Calendly      →  Demo meetings auto-booked
       └──▶ Gmail         →  Follow-up sequences triggered
       
       ▲
@@ -80,18 +80,18 @@ Reporting: Private Telegram channel (log) + bot chat (commands)
   - Send window: **09:00–11:00 Lisbon time**
   - PT-PT locale settings
 
-### 2.3 Cal.com (Demo Booking)
-- OAuth connection to OpenClaw
+### 2.3 Calendly (Demo Booking)
 - Create event type: **"PropRooster Demo"**
   - Duration: 30 min
   - Auto-generate Zoom link
   - Buffer: 15 min before/after
   - Availability: Mon–Fri, 10:00–17:00 Lisbon
+- Set `CALENDLY_BOOKING_URL` in `~/.openclaw/.env`
 
 ### 2.4 Gmail (Follow-ups)
 - OAuth connection — use a **dedicated follow-up inbox**, not main
 - Agent monitors for replies and triggers follow-up logic accordingly
-- Link to Cal.com so booked meetings trigger a confirmation email
+- Link to Calendly so booked meetings trigger a confirmation email
 
 ---
 
@@ -134,7 +134,7 @@ Subject: specific to their niche (luxury / commercial / residential)
 Body: 3 sentences max
   1. Pain point specific to their segment
   2. PropRooster hook (WhatsApp automation for lead qualification)
-  3. Single CTA: 15-minute call, Cal.com link
+  3. Single CTA: 15-minute call, Calendly link
 
 Rules:
   - No attachments
@@ -145,7 +145,7 @@ Rules:
 ## Email 2 — Day 3, Social proof
   - Reference pilot data: Alma Montijo, PRIORE XXI
   - Use real numbers if available (conversion rates, leads qualified)
-  - No Cal link — softer touch
+  - No Calendly link — softer touch
 
 ## Email 3 — Day 7, Breakup
   - Short. 2 sentences.
@@ -153,7 +153,7 @@ Rules:
   - No CTA, just a question
 
 ## Sequence rules
-  - Cal.com link: Email 1 only
+  - Calendly link: Email 1 only
   - Max 3 emails per contact
   - If reply → pause sequence, alert Aviv on Telegram immediately
 ```
@@ -244,7 +244,7 @@ Run cold outreach cycle — LIVE.
 | OpenClaw | Check current pricing |
 | Apollo (starter) | ~$49 |
 | Instantly (starter) | ~$37 |
-| Cal.com | Free (hobby) |
+| Calendly | Free (basic) |
 | Gmail | Free |
 | **Total** | **~€90–100/mo** |
 
@@ -255,7 +255,7 @@ Run cold outreach cycle — LIVE.
 - [ ] 3 outreach campaigns live
 - [ ] 200+ ICP leads sourced and sequenced
 - [ ] ≥ 5% reply rate (PT cold email benchmark)
-- [ ] ≥ 2 demos booked via Cal.com
+- [ ] ≥ 2 demos booked via Calendly
 - [ ] Zero manual work from Aviv after setup
 
 ---

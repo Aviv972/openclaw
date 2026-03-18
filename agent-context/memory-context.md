@@ -65,6 +65,6 @@
 
 > Any context Aviv wants the agent to carry into the next cycle.
 
-- **CSV:** Use **read** on `docs/PT-luxury-agencies.csv` (local file, NOT a URL). **Datagma:** Use **web_fetch** on `http://127.0.0.1:17892/find_people?domain=DOMAIN` only — NOT gateway.datagma.net. Do NOT simulate.
+- **Lead sourcing:** Use Apollo People API via exec tool: `bash /root/OpenClaw/scripts/apollo-search.sh`. Apollo is the only lead source. Do NOT simulate contacts.
 - First run: use PREVIEW MODE — do not load into Instantly until Aviv reviews lead list and email drafts
 - Inbox warmup status: confirm 2-week warmup is complete before switching to LIVE MODE

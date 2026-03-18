@@ -10,7 +10,7 @@
 **Type:** `Self-hosted AI agent (OpenClaw) / automation workflow`
 **Owner:** `Aviv Carmi`
 
-Autonomous cold outreach agent running on a self-hosted OpenClaw gateway on a Hetzner VPS, controlled via Telegram. Sources PT real estate leads from Apollo, builds sequences in Instantly, and auto-books demos via Cal.com.
+Autonomous cold outreach agent running on a self-hosted OpenClaw gateway on a Hetzner VPS, controlled via Telegram. Sources PT real estate leads from Apollo, builds sequences in Instantly, and auto-books demos via Calendly.
 
 ---
 
@@ -29,7 +29,7 @@ OpenClaw/
 ├── skills/
 │   ├── apollo-search/SKILL.md           # Custom skill: search Apollo via HTTP
 │   ├── instantly-campaign/SKILL.md      # Custom skill: manage Instantly campaigns
-│   └── calcom-booking/SKILL.md         # Custom skill: check Cal.com bookings
+│   └── calendly-booking/SKILL.md       # Custom skill: check Calendly bookings
 │
 └── docs/
     └── setup.md                         # VPS setup, env vars, openclaw.json config
@@ -47,7 +47,7 @@ OpenClaw/
 | `agent-context/memory-context.md` | Live state — update weekly after each run |
 | `skills/apollo-search/` | Custom OpenClaw skill wrapping Apollo REST API via HTTP |
 | `skills/instantly-campaign/` | Custom skill wrapping Instantly API |
-| `skills/calcom-booking/` | Custom skill wrapping Cal.com API |
+| `skills/calendly-booking/` | Custom skill wrapping Calendly API |
 
 ---
 
@@ -80,7 +80,7 @@ Every OpenClaw skill must have YAML frontmatter with:
 |---|---|---|---|
 | ADR-001 | Telegram over WhatsApp | Accepted | Easier setup, markdown reporting, no Meta API dependency |
 | ADR-002 | Himalaya skill for Gmail follow-ups | Accepted | No native Gmail skill exists; himalaya handles IMAP/SMTP including Gmail via App Password — OAuth approach described in plan Phase 2.4 is superseded by this decision |
-| ADR-003 | Custom skills for Apollo/Instantly/Cal.com | Accepted | No native integrations exist; build SKILL.md wrappers using xurl/HTTP calls |
+| ADR-003 | Custom skills for Apollo/Instantly/Calendly | Accepted | No native integrations exist; build SKILL.md wrappers using HTTP calls |
 | ADR-004 | Self-hosted OpenClaw on Hetzner VPS | Accepted | Docker Compose deployment via `docker-setup.sh` or `docker-compose.yml` |
 | ADR-005 | Agent context files ≠ skills | Accepted | ICP/playbook/memory are system prompt injections, not SKILL.md tools |
 
@@ -149,7 +149,7 @@ tail -f /tmp/openclaw-gateway.log
 - Recommend the weekly memory-update Telegram command when discussing agent state or memory drift
 
 ### What Claude Should Never Do
-- Suggest Apollo/Instantly/Cal.com are plug-and-play — they require custom skill wrappers
+- Suggest Apollo/Instantly/Calendly are plug-and-play — they require custom skill wrappers
 - Treat `agent-context/` files as OpenClaw skills — they are system prompt context only
 - Re-contact domains listed in `agent-context/memory-context.md` do-not-contact list
 - Suggest Gmail OAuth — use himalaya with App Password for IMAP/SMTP
@@ -174,10 +174,10 @@ OpenClaw has built-in skills and this project adds custom ones.
 | Skill | Path | Notes |
 |---|---|---|
 | `himalaya` | `openclaw/openclaw:skills/himalaya` | Built-in — email CLI (IMAP/SMTP); use for Gmail follow-ups via App Password |
-| `xurl` | `openclaw/openclaw:skills/xurl` | Built-in — HTTP requests; base for Apollo/Instantly/Cal.com calls |
+| `xurl` | `openclaw/openclaw:skills/xurl` | Built-in — HTTP requests; base for Apollo/Instantly/Calendly calls |
 | `apollo-search` | `skills/apollo-search/SKILL.md` | Custom — to build; wraps Apollo REST API |
 | `instantly-campaign` | `skills/instantly-campaign/SKILL.md` | Custom — to build; wraps Instantly API |
-| `calcom-booking` | `skills/calcom-booking/SKILL.md` | Custom — to build; wraps Cal.com API |
+| `calendly-booking` | `skills/calendly-booking/SKILL.md` | Custom — to build; wraps Calendly API |
 
 ---
 
@@ -185,7 +185,7 @@ OpenClaw has built-in skills and this project adds custom ones.
 
 - [ ] Apollo PT data quality — supplement with LinkedIn manual exports or Kaspr if thin
 - [ ] Configure himalaya with Gmail App Password before first run
-- [ ] Build custom `SKILL.md` for Apollo, Instantly, Cal.com (xurl-based HTTP wrappers)
+- [ ] Build custom `SKILL.md` for Apollo, Instantly, Calendly (HTTP wrappers)
 - [ ] Confirm persistent memory config (`agent.memory.enabled true`) before first run
 - [ ] Populate `agent-context/memory-context.md` with current pilot data (Alma Montijo, PRIORE XXI)
 - [ ] Confirm 2-week inbox warmup in Instantly before first live send

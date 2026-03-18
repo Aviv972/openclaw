@@ -22,25 +22,20 @@ Search Apollo for PT real estate ICP leads. Two endpoints available:
 
 **Auth:** `x-api-key` header. **Base URL:** `https://api.apollo.io/api/v1`. **Params:** Query string only.
 
-## Usage
+## How to invoke (IMPORTANT)
 
-Search for ICP leads with default filters (Portugal, Real Estate, C-suite/Director/Owner, 10–200 employees):
-
-```
-apollo-search
-```
-
-Search with a custom location filter:
+Use the **exec** tool. Pass this as the exec command:
 
 ```
-apollo-search location="Porto"
+bash /root/OpenClaw/scripts/apollo-search.sh
 ```
 
-Search with a custom segment:
+Optional args: location (default: Portugal), per_page (default: 25).
 
-```
-apollo-search segment="luxury"
-```
+Examples (exec command parameter):
+- `bash /root/OpenClaw/scripts/apollo-search.sh` — default PT search
+- `bash /root/OpenClaw/scripts/apollo-search.sh Lisbon 10` — Lisbon only, 10 results
+- `bash /root/OpenClaw/scripts/apollo-search.sh Porto 15` — Porto only, 15 results
 
 ## Parameters
 

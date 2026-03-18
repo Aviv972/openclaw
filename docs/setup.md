@@ -41,7 +41,6 @@ Add all of these to `~/.openclaw/.env` on the VPS before starting the gateway.
 | `ANTHROPIC_API_KEY` | Claude API key (Sonnet minimum) | console.anthropic.com |
 | `TELEGRAM_BOT_TOKEN` | Bot token from @BotFather | Telegram → @BotFather → /newbot |
 | `APOLLO_API_KEY` | Apollo People Search API key | app.apollo.io → Settings → API |
-| `DATAGMA_API_KEY` | Datagma Find People API key (testing) | app.datagma.com → API |
 | `INSTANTLY_API_KEY` | Instantly campaign API key | app.instantly.ai → Settings → API |
 | `CALENDLY_BOOKING_URL` | PropRooster Demo booking link (used in Email 1 CTA) | Calendly → Create "PropRooster Demo" event type → copy public link (e.g. `https://calendly.com/your-username/proprooster-demo`) |
 | `GMAIL_APP_PASSWORD` | Gmail App Password for himalaya IMAP/SMTP | Google Account → Security → App Passwords |
@@ -53,7 +52,6 @@ Add all of these to `~/.openclaw/.env` on the VPS before starting the gateway.
 ANTHROPIC_API_KEY=sk-ant-...
 TELEGRAM_BOT_TOKEN=...
 APOLLO_API_KEY=...
-DATAGMA_API_KEY=...
 INSTANTLY_API_KEY=...
 CALENDLY_BOOKING_URL=https://calendly.com/your-username/proprooster-demo
 GMAIL_APP_PASSWORD=...
@@ -170,32 +168,6 @@ auth.raw = "${GMAIL_APP_PASSWORD}"
 ```bash
 himalaya list --account proprooster
 ```
-
----
-
-## 5b. Datagma (Testing — CSV company list)
-
-For testing without Apollo paid plan, use Datagma with the CSV company list.
-
-1. Get API key at [app.datagma.com](https://app.datagma.com/)
-2. Add `DATAGMA_API_KEY` to `~/.openclaw/.env`
-3. Skills auto-load from workspace — no register command needed
-4. **Start the Datagma proxy** (agent uses web_fetch, not exec): The proxy runs on port 17892 and forwards requests to the Datagma API. Start it alongside the gateway:
-   ```bash
-   nohup python3 /root/OpenClaw/scripts/datagma-proxy.py > /tmp/datagma-proxy.log 2>&1 &
-   ```
-5. Test with CSV domains:
-
-```bash
-# Quick test (first domain from CSV)
-bash docs/test-datagma-csv.sh
-
-# Via agent: web_fetch http://127.0.0.1:17892/find_people?domain=avenueliving.pt
-```
-
-CSV: `docs/Developers & real estate agencies - Developers.csv` — extract domains from Website column. Free tier: 90 credits/month (10 per Find People search).
-
-**Troubleshooting:** If the agent reports "datagma-search not available", ensure: (1) Datagma proxy is running: `pgrep -fa datagma-proxy`; (2) agent uses **web_fetch** with `http://127.0.0.1:17892/find_people?domain=DOMAIN`; (3) run `bash docs/sync-agent-context.sh`; (4) restart the gateway.
 
 ---
 

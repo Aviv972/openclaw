@@ -20,16 +20,7 @@ cp "$REPO_ROOT/agent-context/outreach-playbook.md" "$SHARED_DIR/SHARED_outreach-
 cp "$REPO_ROOT/agent-context/memory-context.md" "$SHARED_DIR/SHARED_memory-context.md"
 
 echo ""
-echo "3. Ensuring Datagma proxy is running..."
-if ! pgrep -f "datagma-proxy.py" >/dev/null; then
-  nohup python3 "$REPO_ROOT/scripts/datagma-proxy.py" > /tmp/datagma-proxy.log 2>&1 &
-  echo "   Started Datagma proxy (port 17892)"
-else
-  echo "   Datagma proxy already running"
-fi
-
-echo ""
-echo "4. Restarting OpenClaw gateway..."
+echo "3. Restarting OpenClaw gateway..."
 if systemctl --user is-active openclaw-gateway &>/dev/null; then
   systemctl --user restart openclaw-gateway
   echo "   (restarted via systemd)"
@@ -41,4 +32,4 @@ else
 fi
 
 echo ""
-echo "Done. Agent context updated. Datagma proxy + gateway restarted."
+echo "Done. Agent context updated. Gateway restarted."
