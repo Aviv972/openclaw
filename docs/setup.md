@@ -78,8 +78,8 @@ openclaw config set agents.defaults.model gpt-5.4-mini
 # 2. Set timezone (userTimezone for system prompt)
 openclaw config set agents.defaults.userTimezone Europe/Lisbon
 
-# 3. Enable persistent memory (critical — do before first run)
-openclaw config set agents.defaults.memory.enabled true
+# 3. Enable persistent memory (if supported — OpenClaw 2026.3+ may use ContextEngine)
+# openclaw config set agent.memory.enabled true  # Uncomment if your version supports it
 
 # 4. Configure Telegram bot
 openclaw config set channels.telegram.token $TELEGRAM_BOT_TOKEN
