@@ -12,6 +12,29 @@
 
 ---
 
+## Lead Research (MANDATORY — before writing Email 1)
+
+Before drafting any email, research each lead to find one specific personalisation hook:
+
+1. **Agency website** — look for:
+   - Current property listings (note a specific project or neighbourhood they focus on)
+   - Any mention of international buyers, golden visa, or NHR
+   - Whether they display a WhatsApp contact prominently
+   - Any visible chatbot or lead qualification system (if yes → skip, they already have a solution)
+
+2. **LinkedIn** (agency page + contact's profile) — look for:
+   - Recent posts about team growth, new projects, or market activity
+   - Contact's tenure and role (how long they've been in position)
+   - Any tools or integrations they mention publicly
+
+3. **Personalisation output** — produce one sentence that can be dropped into Email 1:
+   - Format: reference something real and specific (a project, a region, a recent post)
+   - Example: "Vi que a [Agency] está a trabalhar no projecto [X] em [bairro]..."
+   - Example: "Reparei que têm uma presença forte no mercado internacional em [cidade]..."
+   - If no specific hook is found after research, use segment-level personalisation (Algarve luxury, Porto centro, etc.) — do not fabricate details
+
+---
+
 ## Email 1 — Cold Intro
 
 **Timing:** Day 0 (first contact)
