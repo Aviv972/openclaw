@@ -36,14 +36,14 @@ for var in "${OPTIONAL_VARS[@]}"; do
   fi
 done
 
-# 1. Agent model
-openclaw config set agent.model gpt-5.4-mini
+# 1. Agent model (OpenClaw 2026.3+ uses agents.defaults)
+openclaw config set agents.defaults.model gpt-5.4-mini
 
 # 2. Timezone
-openclaw config set agent.timezone Europe/Lisbon
+openclaw config set agents.defaults.timezone Europe/Lisbon
 
-# 3. Persistent memory
-openclaw config set agent.memory.enabled true
+# 3. Persistent memory (agents.defaults if agent.* fails)
+openclaw config set agent.memory.enabled true 2>/dev/null || openclaw config set agents.defaults.memory.enabled true
 
 # 4. Telegram bot
 openclaw config set channels.telegram.token "$TELEGRAM_BOT_TOKEN"

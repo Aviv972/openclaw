@@ -72,14 +72,14 @@ npm install -g openclaw
 ### Configuration sequence (8 steps — run in order)
 
 ```bash
-# 1. Set agent model (GPT-5.4-mini or Claude Sonnet minimum)
-openclaw config set agent.model gpt-5.4-mini
+# 1. Set agent model (OpenClaw 2026.3+ uses agents.defaults)
+openclaw config set agents.defaults.model gpt-5.4-mini
 
 # 2. Set timezone
-openclaw config set agent.timezone Europe/Lisbon
+openclaw config set agents.defaults.timezone Europe/Lisbon
 
 # 3. Enable persistent memory (critical — do before first run)
-openclaw config set agent.memory.enabled true
+openclaw config set agents.defaults.memory.enabled true
 
 # 4. Configure Telegram bot
 openclaw config set channels.telegram.token $TELEGRAM_BOT_TOKEN
