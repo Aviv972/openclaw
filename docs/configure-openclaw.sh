@@ -39,8 +39,8 @@ done
 # 1. Agent model (OpenClaw 2026.3+ uses agents.defaults)
 openclaw config set agents.defaults.model gpt-5.4-mini
 
-# 2. Timezone
-openclaw config set agents.defaults.timezone Europe/Lisbon
+# 2. Timezone (userTimezone for system prompt)
+openclaw config set agents.defaults.userTimezone Europe/Lisbon
 
 # 3. Persistent memory (agents.defaults if agent.* fails)
 openclaw config set agent.memory.enabled true 2>/dev/null || openclaw config set agents.defaults.memory.enabled true

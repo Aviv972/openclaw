@@ -75,8 +75,8 @@ npm install -g openclaw
 # 1. Set agent model (OpenClaw 2026.3+ uses agents.defaults)
 openclaw config set agents.defaults.model gpt-5.4-mini
 
-# 2. Set timezone
-openclaw config set agents.defaults.timezone Europe/Lisbon
+# 2. Set timezone (userTimezone for system prompt)
+openclaw config set agents.defaults.userTimezone Europe/Lisbon
 
 # 3. Enable persistent memory (critical — do before first run)
 openclaw config set agents.defaults.memory.enabled true
