@@ -180,19 +180,22 @@ For testing without Apollo paid plan, use Datagma with the CSV company list.
 1. Get API key at [app.datagma.com](https://app.datagma.com/)
 2. Add `DATAGMA_API_KEY` to `~/.openclaw/.env`
 3. Skills auto-load from workspace — no register command needed
-4. **Exec approvals (required for Datagma):** The agent runs `bash /root/OpenClaw/scripts/datagma-search.sh DOMAIN` via the exec tool. On a headless VPS there is no UI to approve commands. Run `bash docs/configure-openclaw.sh` — it creates `~/.openclaw/exec-approvals.json` with `security=full` so exec runs without prompts. If the file already exists, edit it manually: set `defaults.security` to `"full"` and `defaults.ask` to `"off"`.
+4. **Start the Datagma proxy** (agent uses web_fetch, not exec): The proxy runs on port 17892 and forwards requests to the Datagma API. Start it alongside the gateway:
+   ```bash
+   nohup python3 /root/OpenClaw/scripts/datagma-proxy.py > /tmp/datagma-proxy.log 2>&1 &
+   ```
 5. Test with CSV domains:
 
 ```bash
 # Quick test (first domain from CSV)
 bash docs/test-datagma-csv.sh
 
-# Via agent: use exec tool to run: bash /root/OpenClaw/scripts/datagma-search.sh avenueliving.pt
+# Via agent: web_fetch http://127.0.0.1:17892/find_people?domain=avenueliving.pt
 ```
 
 CSV: `docs/Developers & real estate agencies - Developers.csv` — extract domains from Website column. Free tier: 90 credits/month (10 per Find People search).
 
-**Troubleshooting:** If the agent reports "datagma-search command/skill not available", the exec tool may be missing from its tool list. Run `bash docs/diagnose-tools.sh` on the VPS to inspect config. Fix: (1) `openclaw config set tools.profile full` (full includes exec; coding/minimal/messaging may omit it); (2) `openclaw config unset tools.byProvider` to remove provider-specific narrowing; (3) `~/.openclaw/exec-approvals.json` with `defaults.security: "full"`; (4) run `bash docs/sync-agent-context.sh`; (5) restart the gateway.
+**Troubleshooting:** If the agent reports "datagma-search not available", ensure: (1) Datagma proxy is running: `pgrep -fa datagma-proxy`; (2) agent uses **web_fetch** with `http://127.0.0.1:17892/find_people?domain=DOMAIN`; (3) run `bash docs/sync-agent-context.sh`; (4) restart the gateway.
 
 ---
 

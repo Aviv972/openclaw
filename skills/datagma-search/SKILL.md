@@ -19,17 +19,19 @@ Find people at a specific company by domain and job title. Ideal for enriching a
 
 ## How to invoke (IMPORTANT)
 
-Use the **exec** tool. Pass this as the exec command:
+Use the **web_fetch** tool with this URL (Datagma proxy runs on the gateway):
 
 ```
-bash /root/OpenClaw/scripts/datagma-search.sh DOMAIN
+http://127.0.0.1:17892/find_people?domain=DOMAIN
 ```
 
-Replace `DOMAIN` with the company domain (e.g. `avenueliving.pt`, `kronoshomes.pt`). There is no separate "datagma-search" tool — you call exec with the above command. The exec tool is in your tool list.
+Replace `DOMAIN` with the company domain (e.g. `avenueliving.pt`, `kronoshomes.pt`).
 
-Examples (exec command parameter):
-- `bash /root/OpenClaw/scripts/datagma-search.sh avenueliving.pt`
-- `bash /root/OpenClaw/scripts/datagma-search.sh kronoshomes.pt`
+Examples:
+- `http://127.0.0.1:17892/find_people?domain=avenueliving.pt`
+- `http://127.0.0.1:17892/find_people?domain=kronoshomes.pt`
+
+**Prerequisite:** The Datagma proxy must be running on the VPS (port 17892). Start it with: `nohup python3 /root/OpenClaw/scripts/datagma-proxy.py &`
 
 ## Parameters
 
@@ -89,7 +91,7 @@ Use `docs/Developers & real estate agencies - Developers.csv`. Extract domains f
 | valedolobo.com | Vale do Lobo |
 | quintaproperty.com | QP Savills |
 
-Use the **exec** tool to run the curl command for each domain. Do not simulate — run the real API call.
+Use **web_fetch** with `http://127.0.0.1:17892/find_people?domain=DOMAIN` for each domain. Do not simulate — run the real API call.
 
 ## Error Handling
 

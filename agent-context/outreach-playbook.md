@@ -5,7 +5,7 @@
 When processing a CSV of developers/agencies (e.g. `docs/Developers & real estate agencies - Developers.csv`):
 
 1. **Extract domains** from the Website column (e.g. `https://avenueliving.pt` → `avenueliving.pt`).
-2. **Use the exec tool** — Invoke exec with command `bash /root/OpenClaw/scripts/datagma-search.sh DOMAIN` for each domain. The exec tool is available. Do NOT simulate. Example command: `bash /root/OpenClaw/scripts/datagma-search.sh avenueliving.pt`
+2. **Use web_fetch** — Fetch `http://127.0.0.1:17892/find_people?domain=DOMAIN` for each domain. Do NOT simulate. Example: `http://127.0.0.1:17892/find_people?domain=avenueliving.pt`
 3. **Use returned contacts** (name, title, email if present) for Email 1 drafts. If Datagma returns no results for a domain, skip that company and try the next.
 4. **Respect credit limits** — Datagma free tier: 90 credits/month (10 per Find People search). Limit to ~9 domains per run on free tier.
 

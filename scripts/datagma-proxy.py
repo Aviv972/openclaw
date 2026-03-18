@@ -2,19 +2,21 @@
 """
 Datagma HTTP proxy — allows agent to fetch contacts via web_fetch (no exec needed).
 Run on VPS: python3 scripts/datagma-proxy.py
-Listens on http://127.0.0.1:18792/find_people?domain=avenueliving.pt
+Listens on http://127.0.0.1:17892/find_people?domain=DOMAIN
 """
 import os
+import socket
 import subprocess
+import sys
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
 SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "datagma-search.sh")
-PORT = 18792
+PORT = 17892  # Outside OpenClaw range (18789-18899)
 
 if not os.path.isfile(SCRIPT):
-    print(f"ERROR: Script not found: {SCRIPT}", file=__import__("sys").stderr)
-    raise SystemExit(2)
+    print(f"ERROR: Script not found: {SCRIPT}", file=sys.stderr)
+    sys.exit(2)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -50,7 +52,17 @@ class Handler(BaseHTTPRequestHandler):
             self.send_error(404, "Not found")
 
 
+class ReuseAddrServer(HTTPServer):
+    def server_bind(self):
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        super().server_bind()
+
+
 if __name__ == "__main__":
-    server = HTTPServer(("127.0.0.1", PORT), Handler)
-    print(f"Datagma proxy: http://127.0.0.1:{PORT}/find_people?domain=DOMAIN")
-    server.serve_forever()
+    try:
+        server = ReuseAddrServer(("127.0.0.1", PORT), Handler)
+        print(f"Datagma proxy: http://127.0.0.1:{PORT}/find_people?domain=DOMAIN", flush=True)
+        server.serve_forever()
+    except OSError as e:
+        print(f"ERROR: Cannot bind to port {PORT}: {e}", file=sys.stderr)
+        sys.exit(1)

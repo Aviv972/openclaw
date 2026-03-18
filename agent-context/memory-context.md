@@ -65,6 +65,6 @@
 
 > Any context Aviv wants the agent to carry into the next cycle.
 
-- **Datagma lead lookup:** Use the **exec** tool (you have it). Invoke exec with command: `bash /root/OpenClaw/scripts/datagma-search.sh DOMAIN`. Replace DOMAIN with the company domain (e.g. avenueliving.pt). Do NOT say "datagma-search is not available" — exec IS available. Do NOT simulate. Run the real command.
+- **Datagma lead lookup:** Use **web_fetch** with URL: `http://127.0.0.1:17892/find_people?domain=DOMAIN`. Replace DOMAIN with the company domain (e.g. avenueliving.pt). Do NOT simulate. Run the real API call.
 - First run: use PREVIEW MODE — do not load into Instantly until Aviv reviews lead list and email drafts
 - Inbox warmup status: confirm 2-week warmup is complete before switching to LIVE MODE
