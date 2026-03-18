@@ -81,11 +81,11 @@ openclaw config set agents.defaults.userTimezone Europe/Lisbon
 # 3. Enable persistent memory (if supported — OpenClaw 2026.3+ may use ContextEngine)
 # openclaw config set agent.memory.enabled true  # Uncomment if your version supports it
 
-# 4. Configure Telegram bot
-openclaw config set channels.telegram.token $TELEGRAM_BOT_TOKEN
+# 4. Configure Telegram bot (OpenClaw 2026.3 uses botToken)
+openclaw config set channels.telegram.botToken $TELEGRAM_BOT_TOKEN
 
-# 5. Set Telegram log channel (reports go here — not to bot chat)
-openclaw config set channels.telegram.log_channel "#proprooster-outreach-log"
+# 5. Set Telegram log channel (reports go here — skip if not supported)
+openclaw config set channels.telegram.log_channel "#proprooster-outreach-log" 2>/dev/null || true
 
 # 6. Register custom skills
 openclaw skills register skills/apollo-search/SKILL.md

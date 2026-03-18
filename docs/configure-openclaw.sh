@@ -45,11 +45,11 @@ openclaw config set agents.defaults.userTimezone Europe/Lisbon
 # 3. Remove invalid memory key if present (OpenClaw 2026.3 schema doesn't include it)
 openclaw config unset agents.defaults.memory 2>/dev/null || true
 
-# 4. Telegram bot
-openclaw config set channels.telegram.token "$TELEGRAM_BOT_TOKEN"
+# 4. Telegram bot (OpenClaw 2026.3 uses botToken not token)
+openclaw config set channels.telegram.botToken "$TELEGRAM_BOT_TOKEN"
 
-# 5. Log channel (reports go here — not bot chat)
-openclaw config set channels.telegram.log_channel "#proprooster-outreach-log"
+# 5. Log channel (reports go here — skip if not supported)
+openclaw config set channels.telegram.log_channel "#proprooster-outreach-log" 2>/dev/null || true
 
 # 6. Agent context via shared bootstrap (OpenClaw 2026.3+ auto-injects SHARED_*.md)
 mkdir -p "$HOME/.openclaw/shared"
