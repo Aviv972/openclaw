@@ -65,6 +65,6 @@
 
 > Any context Aviv wants the agent to carry into the next cycle.
 
-- **MUST use real datagma-search** — When sourcing leads from CSV, invoke the `datagma-search` skill for each domain. Do NOT simulate or fabricate contact data. Run the actual API.
+- **Datagma lead lookup:** Use the **exec** tool (you have it). Invoke exec with command: `bash /root/OpenClaw/scripts/datagma-search.sh DOMAIN`. Replace DOMAIN with the company domain (e.g. avenueliving.pt). Do NOT say "datagma-search is not available" — exec IS available. Do NOT simulate. Run the real command.
 - First run: use PREVIEW MODE — do not load into Instantly until Aviv reviews lead list and email drafts
 - Inbox warmup status: confirm 2-week warmup is complete before switching to LIVE MODE

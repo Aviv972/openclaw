@@ -19,17 +19,17 @@ Find people at a specific company by domain and job title. Ideal for enriching a
 
 ## How to invoke (IMPORTANT)
 
-There is no `datagma-search` command. You MUST use the **exec** tool to run the script:
+Use the **exec** tool. Pass this as the exec command:
 
 ```
-exec: bash /root/OpenClaw/scripts/datagma-search.sh DOMAIN
+bash /root/OpenClaw/scripts/datagma-search.sh DOMAIN
 ```
 
-Replace `DOMAIN` with the company domain (e.g. `avenueliving.pt`, `kronoshomes.pt`). Optional second arg: job title (default: "Marketing Manager OR Sales Manager OR Director OR Owner").
+Replace `DOMAIN` with the company domain (e.g. `avenueliving.pt`, `kronoshomes.pt`). There is no separate "datagma-search" tool — you call exec with the above command. The exec tool is in your tool list.
 
-Examples:
-- `exec: bash /root/OpenClaw/scripts/datagma-search.sh avenueliving.pt`
-- `exec: bash /root/OpenClaw/scripts/datagma-search.sh kronoshomes.pt`
+Examples (exec command parameter):
+- `bash /root/OpenClaw/scripts/datagma-search.sh avenueliving.pt`
+- `bash /root/OpenClaw/scripts/datagma-search.sh kronoshomes.pt`
 
 ## Parameters
 
